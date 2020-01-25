@@ -20,7 +20,7 @@ app.use(cors())
 
 // app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
-// app.use('/api/art', artRouter)
+app.use('/api/art', artRouter)
 
 app.get('/', (req, res) => {
     res.json({ ok: true });
