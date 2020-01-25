@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS museum_art_data;
