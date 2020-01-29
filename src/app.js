@@ -7,8 +7,9 @@ const { NODE_ENV } = require('./config')
 
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
-const artRouter = require('./art/art-router')
 const metRouter = require('./met/met-router')
+const artRouter = require('./art/art-router')
+const commentsRouter = require('./comments/comments-router')
 const app = express()
 
 const morganOption = (NODE_ENV === 'production')
@@ -21,10 +22,11 @@ app.use(cors())
 
 // app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
-app.use('/api/art', artRouter)
 app.use('/api/met', metRouter)
+app.use('/api/art', artRouter)
+app.use('/api/comments', commentsRouter)
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.json({ ok: true });
 })
 
