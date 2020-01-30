@@ -1,5 +1,6 @@
 const express = require('express')
 const xss = require('xss')
+const path = require('path')
 const usersRouter = express.Router()
 const jsonBodyParser = express.json()
 const UsersService = require('./users-service')

@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const xss = require('xss')
 const CommentsService = require('./comments-service')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const commentsRouter = express.Router()
 const jsonParser = express.json()
@@ -9,6 +10,7 @@ const jsonParser = express.json()
 const serializeComment = comment => ({
     // id: comment.id,
     art_id: comment.art_id,
+    user_name: comment.user_name,
     comment: xss(comment.comment),
 })
 
@@ -21,9 +23,9 @@ commentsRouter
             })
             .catch(next)
     })
-    .post(jsonParser, (req, res, next) => {
-        const { art_id, comment } = req.body
-        const newComment = { art_id, comment }
+    .post(requireAuth, jsonParser, (req, res, next) => {
+        const { art_id, /*user_name,*/ comment } = req.body
+        const newComment = { art_id, /*user_name,*/ comment }
 
         for (const [key, value] of Object.entries(newComment))
         if (value == null)
@@ -39,6 +41,7 @@ commentsRouter
             newComment
         )
         .then(comment => {
+            console.log(comment)
             res
                 .status(201)
                 .location(path.posix.join(req.originalUrl, `${comment.id}`))

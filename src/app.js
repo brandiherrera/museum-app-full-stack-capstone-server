@@ -20,7 +20,7 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
-// app.use('/api/auth', authRouter)
+app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/met', metRouter)
 app.use('/api/art', artRouter)

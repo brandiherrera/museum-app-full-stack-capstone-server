@@ -3,7 +3,7 @@ CREATE TABLE museum_users (
     date_created TIMESTAMP DEFAULT now() NOT NULL,
     first_name TEXT,
     last_name TEXT,
-    user_name TEXT NOT NULL,
+    user_name TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL,
     password TEXT NOT NULL
 );
