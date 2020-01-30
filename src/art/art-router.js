@@ -1,7 +1,8 @@
+const path = require('path')
 const express = require('express')
 const xss = require('xss')
 const ArtService = require('./art-service')
-// const { requireAuth } = require('../middleware/jwt-auth ')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const artRouter = express.Router()
 const jsonParser = express.json()
@@ -44,4 +45,47 @@ artRouter
         res.json(res.art)
     })
 
+artRouter
+    .route('/gallery/:user_id')
+    .all(requireAuth)
+    .all((req, res, next) => {
+        const { user_id } = req.params;
+        ArtService.getUserGallery(req.app.get('db'), user_id)
+            .then(gallery => {
+                if (!gallery) {
+                    return res
+                        .status(404).json({ error: { message: `No gallery exists.` } })
+                }
+                res.gallery = gallery
+                next()
+            })
+            .catch(next)
+    })
+    .get((req, res) => {
+        res.json(res.gallery)
+    })
+    .post(requireAuth, jsonParser, (req, res, next) => {
+        const { art_id } = req.body
+        const newGalleryItem = { art_id }
+
+        for (const [key, value] of Object.entries(newGalleryItem))
+            if (value == null)
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                })
+
+        newGalleryItem.user_id = req.user.id
+
+        ArtService.insertGalleryItem(
+            req.app.get('db'),
+            newGalleryItem
+        )
+            .then(gallery => {
+                res
+                    .status(201)
+                    .location(path.posix.join(req.originalUrl, `${gallery.id}`))
+                    .json()
+            })
+            .catch(next)
+    })
 module.exports = artRouter
