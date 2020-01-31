@@ -19,13 +19,25 @@ const jsonParser = express.json()
 //     date_created: new Date(user.date_created),
 // })
 
+// const serializeUser = (user) => {
+//     return {
+//         // user_id: user.id,
+//         id: user.id,
+//         first_name: xss(user.first_name),
+//         last_name: xss(user.last_name),
+//         user_name: xss(user.user_name),
+//         email: xss(user.email),
+//         // password: xss(user.password),
+//         date_created: new Date(user.date_created),
+//     }
+// }
 // All users
 usersRouter
     .route('/')
     .get((req, res, next) => {
         UsersService.getAllUsers(req.app.get('db'))
-        .then(users => {
-            res.json(users.map(serializeUser))
+        .then(user => {
+            res.json(users.map(UsersService.serializeUser(user)))
         })
         .catch(next)
     })
