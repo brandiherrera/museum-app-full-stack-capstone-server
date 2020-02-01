@@ -109,16 +109,7 @@ artRouter
     //         })
     //         .catch(next)
     // })
-    .delete((req, res, next) => {
-        ArtService.deleteRecord(
-            req.app.get('db'),
-            req.params.id
-        )
-            .then(() => {
-                res.status(204).end()
-            })
-            .catch(next)
-    })
+
 
 artRouter
     .route('/gallery/:user_id/:id')
@@ -139,6 +130,16 @@ artRouter
     })
     .get((req, res) => {
         res.json(res.gallery)
+    })
+    .delete((req, res, next) => {
+        ArtService.deleteRecord(
+            req.app.get('db'),
+            req.params.id
+        )
+            .then(() => {
+                res.status(204).end()
+            })
+            .catch(next)
     })
 
 module.exports = artRouter

@@ -52,11 +52,11 @@ const ArtService = {
             .where({ id })
             .delete()
     },
-    // deleteRecord(knex, id) {
-    //     return knex('users_gallery')
-    //         .where({ id })
-    //         .delete()
-    // },
+    deleteRecord(knex, id) {
+        return knex('users_gallery')
+            .where('id', id)
+            .delete()
+    },
 }
 
 module.exports = ArtService
