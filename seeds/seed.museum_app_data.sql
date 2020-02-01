@@ -1,3 +1,16 @@
+-- TRUNCATE 
+--     museum_art_data,
+--     users_comments
+--     RESTART IDENTITY CASCADE;
+
+-- INSERT INTO museum_art_data (object_id, primary_image, art_title, art_artist, art_date) VALUES
+--     (436535, 'https://images.metmuseum.org/CRDImages/ep/original/DT1567.jpg', 'Wheat Field with Cypresses', 'Vincent van Gogh', '1889'),
+--     (437835, 'https://images.metmuseum.org/CRDImages/ep/original/DT1500.jpg', 'The Englishman (William Tom Warrener, 1861–1934) at the Moulin Rouge', 'Henri de Toulouse-Lautrec', '1892');
+--     (438012, 'https://images.metmuseum.org/CRDImages/ep/original/DT1877.jpg', 'Bouquet of Chrysanthemums', 'Auguste Renoir', '1881'),
+--     (335537, 'https://images.metmuseum.org/CRDImages/dp/original/DP108507.jpg', 'Drawings and Prints', 'Vincent van Gogh', '1888');
+
+
+
 TRUNCATE 
     museum_users,
     museum_art_data,

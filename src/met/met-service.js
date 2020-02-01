@@ -3,11 +3,31 @@ const fetch = require('isomorphic-fetch')
 const metRouter = require('./met-router')
 
 const MetService = {
-    insertObjectData(knex, newData) {
-        console.log('insertObjectData(newData)', newData)
-        // if newData.object_id exists in db, return
-        // else { 
+    checkExists(knex, newData) {
         return knex
+            .select('*')
+            .where('object_id', newData.object_id)
+            .from('museum_art_data')
+            // .update('*')
+    },
+    // insertObjectData(knex, newData) {
+    //     const firstData = data[0] ? data[0] : data;
+    //     return knex
+    //         .raw(knex('museum_art_data').insert(newData).toQuery() + 
+    //         'ON CONFLICT ("object_id") DO UPDATE SET ' + Object.keys(firstData).map((field) => `${field}=EXCLUDED.${field}`).join(', '))
+
+    // },
+    insertObjectData(knex, newData) {
+        // for (let i = 0; i < 5; i++) {
+        //     if (newData.object_id exists in db,)
+        // }
+        console.log('insertObjectData(newData)', newData)
+
+        
+        // else { 
+            // if (newData.object_id )
+        return knex
+            // .raw()
             .insert(newData)
             .into('museum_art_data')
             .returning('*')
@@ -21,6 +41,7 @@ const MetService = {
             // if newData.object_id exists in db, return
             // if (ON C)
             // else { 
+
             fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectArray[i]}`)
                 .then(response => {
                     if (!response.ok) {
@@ -50,18 +71,26 @@ const MetService = {
                 })
         }
     },
+    getById(knex, id) {
+        return knex
+            .from('museum_art_data')
+            .select('*')
+            .where('id', id)
+            .first()
+    },
     getRandomId(objectArray) {
         let randomId = objectArray[Math.floor(Math.random() * objectArray.length)];
         console.log('randomId', randomId);
         return randomId;
     },
-    getMetData(knex) {
-        fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=european&medium=Paintings')
+    getMetData() {
+        return fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=european&medium=Paintings')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(response.statusText)
                 }
-                return response.json()
+                console.log(response)
+                // return response.json()
             })
             .then(resJson => {
                 // console.log('resJson', resJson)
@@ -81,7 +110,12 @@ const MetService = {
                 console.log('getMetData() Error:', err.message)
                 // return err
             })
-    }
+    },
+    deleteMetItem(knex, object_id) {
+        return knex('museum_art_data')
+            .where({ object_id })
+            .delete()
+    },
 
 }
 

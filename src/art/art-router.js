@@ -44,6 +44,16 @@ artRouter
     .get((req, res, next) => {
         res.json(res.art)
     })
+    .delete((req, res, next) => {
+        ArtService.deleteById(
+            req.app.get('db'),
+            req.params.object_id
+        )
+            .then(() => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
 
 artRouter
     .route('/gallery/:user_id')
@@ -59,6 +69,7 @@ artRouter
                 res.gallery = gallery
                 next()
             })
+            // .then()
             .catch(next)
     })
     .get((req, res) => {
@@ -88,4 +99,46 @@ artRouter
             })
             .catch(next)
     })
+    // .delete((req, res, next) => {
+    //     ArtService.deleteUserGallery(
+    //         req.app.get('db'),
+    //         req.params.art_id
+    //     )
+    //         .then(() => {
+    //             res.status(204).end()
+    //         })
+    //         .catch(next)
+    // })
+    .delete((req, res, next) => {
+        ArtService.deleteRecord(
+            req.app.get('db'),
+            req.params.id
+        )
+            .then(() => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
+
+artRouter
+    .route('/gallery/:user_id/:id')
+    .all(requireAuth)
+    .all((req, res, next) => {
+        const { user_id } = req.params;
+        ArtService.getUserGallery(req.app.get('db'), user_id)
+            .then(gallery => {
+                if (!gallery) {
+                    return res
+                        .status(404).json({ error: { message: `No gallery exists.` } })
+                }
+                res.gallery = gallery
+                next()
+            })
+            .then()
+            .catch(next)
+    })
+    .get((req, res) => {
+        res.json(res.gallery)
+    })
+
 module.exports = artRouter
