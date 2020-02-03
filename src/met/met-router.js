@@ -17,8 +17,8 @@ const serializeData = data => ({
 metRouter
     .route('/')
     .get((req, res, next) => {
-        // MetService.getMetData(req.app.get('db'))
-        MetService.getMetData()
+        MetService.getMetData(req.app.get('db'))
+        // MetService.getMetData()
             .then(met => {
                 res.json(met)
             })
@@ -43,7 +43,7 @@ metRouter
                 res
                     .status(201)
                     // .primary_image(path.posix.join(req.originalUrl, `${data.id}`))
-                    // .json(serializedata(data))
+                    .json(serializedata(data))
             })
             .catch(next)
     })
