@@ -4,12 +4,19 @@ const CommentsService = {
             .select('*')
             .from('users_comments')
     },
+    getUsername(knex, id) {
+        return knex
+            // .select('*')
+            .select('user_name')
+            .from('museum_users')
+            .where('id', id)
+            .first()
+    },
     getById(knex, object_id) {
         return knex
             .from('users_comments')
             .select('*')
             .where('art_id', object_id)
-            // .first()
     },
     insertComment(knex, newComment) {
         return knex

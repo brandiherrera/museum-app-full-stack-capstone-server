@@ -3,6 +3,7 @@ module.exports = {
     NODE_ENV: process.env.NODE_ENV || 'development',
     CLIENT_ORIGIN: process.env.CLIENT_ORIGIN || 3000,
     // DATABASE_URL: 'postgresql://dunder_mifflin@localhost/museum-app',
+    // DATABASE_URL: process.env.DATABASE_URL,
     DATABASE_URL: process.env.DATABASE_URL || 'postgresql://dunder_mifflin@localhost/museum-app',
     TEST_DATABASE_URL: process.env.TEST_DATABASE_URL || 'postgresql://dunder_mifflin@localhost/museum-app-test',
 

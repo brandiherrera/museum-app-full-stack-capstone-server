@@ -3,5 +3,6 @@ CREATE TABLE users_gallery (
     date_created TIMESTAMP DEFAULT now() NOT NULL,
     user_id INTEGER REFERENCES museum_users(id) ON DELETE CASCADE NOT NULL,
     user_name TEXT REFERENCES museum_users(user_name) ON DELETE CASCADE,
+    -- user_name TEXT REFERENCES museum_users(user_name) WHERE user_id EQUAL TO museum_users(id) ON DELETE CASCADE,
     art_id INTEGER NOT NULL
 );

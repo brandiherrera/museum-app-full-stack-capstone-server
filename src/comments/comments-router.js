@@ -8,9 +8,8 @@ const commentsRouter = express.Router()
 const jsonParser = express.json()
 
 const serializeComment = comment => ({
-    // id: comment.id,
-    art_id: comment.art_id,
     user_name: comment.user_name,
+    art_id: comment.art_id,
     comment: xss(comment.comment),
 })
 
@@ -24,30 +23,32 @@ commentsRouter
             .catch(next)
     })
     .post(requireAuth, jsonParser, (req, res, next) => {
-        const { art_id, /*user_name,*/ comment } = req.body
-        const newComment = { art_id, /*user_name,*/ comment }
+        const { user_name, art_id, comment } = req.body
+        const newComment = {  user_name, art_id, comment }
 
         for (const [key, value] of Object.entries(newComment))
-        if (value == null)
-            return res.status(400).json({
-                error: { message: `Missing '${key}' in request body` }
-            })
-        console.log(req.user.user_id)
+            if (value == null)
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                })
+
         newComment.user_id = req.user.id
-        // newComment.user_id = 1
+        newComment.user_name = req.user.user_name
+        console.log('User id L38====>', newComment.user_id)
+        console.log('User id L39====>', newComment.user_name)
 
         CommentsService.insertComment(
             req.app.get('db'),
             newComment
         )
-        .then(comment => {
-            console.log(comment)
-            res
-                .status(201)
-                .location(path.posix.join(req.originalUrl, `${comment.id}`))
-                .json(serializeComment(comment))
-        })
-        .catch(next)
+            .then(comment => {
+                console.log('COMMENT L44 ====>', comment)
+                res
+                    .status(201)
+                    .location(path.posix.join(req.originalUrl, `${comment.id}`))
+                    .json(serializeComment(comment))
+            })
+            .catch(next)
     })
 
 commentsRouter

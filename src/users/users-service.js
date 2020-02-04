@@ -50,7 +50,11 @@ const UsersService = {
             .delete()
     },
     getById(knex, id) {
-        return knex.from('museum_users').select('*').where('id', id).first()
+        return knex
+            .from('museum_users')
+            .select('*')
+            .where('id', id)
+            .first()
     },
 }
 
