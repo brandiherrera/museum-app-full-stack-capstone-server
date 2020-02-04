@@ -7,14 +7,6 @@ const { requireAuth } = require('../middleware/jwt-auth')
 const artRouter = express.Router()
 const jsonParser = express.json()
 
-// const serializeArt = art => ({
-//     id: art.id,
-//     object_id: art.object_id,
-//     primary_image: art.primary_image,
-//     art_title: art.art_title,
-//     art_artist: art.art_artist,
-//     art_date: art.art_date,
-// })
 
 artRouter
     .route('/')
