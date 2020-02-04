@@ -39,6 +39,10 @@ As a returning user I want to view my gallery so I can enjoy artwork that I like
 
 As a returning user I want to view artwork that I have saved in greater detail at my leisure so I can enjoy it, view other comments, and add comments of my own.
 
+**Comments**
+
+As a returning user I want to post comments on various pieces of art so I can enter discussions with other users or simply to share my thoughts with myself and other users. I want to be able to view them in real-time and at a later date as I wish.
+
 **Log Out Page**
 
 As a returning user I want to access a log out so I can log out at my convenience.
@@ -80,6 +84,12 @@ As a returning user I want to access a log out so I can log out at my convenienc
 #### GET `api/art/:object_id`
 
 <img src="./screenshots/art-page.png" alt="Art page">
+
+### **Comments**
+
+#### POST `api/art/comments` <br> GET `api/art/comments/:object_id`
+
+<img src="./screenshots/comments.png" alt="Comments">
 
 ## API Documentation
 
@@ -248,6 +258,7 @@ Allows a logged-in user to view all comments other users have made on a piece of
 * CSS3
 * JavaScript
 * React
+* Jest and Enzyme for testing
   
 <b>Back End</b>
 * Node.js
