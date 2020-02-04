@@ -251,6 +251,10 @@ Allows a logged-in user to view all comments other users have made on a piece of
 }
 ``` -->
 
+## Third-Party API Documentation
+
+<!-- ADD INFO HERE -->
+
 ## Technology Used
 
 <b>Front End</b>
