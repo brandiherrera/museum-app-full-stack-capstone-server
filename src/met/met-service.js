@@ -2,7 +2,7 @@ const fetch = require('isomorphic-fetch')
 const schedule = require('node-schedule')
 
 
-let dailyInterval = () => schedule.scheduleJob({ hour: 00, minute: 12, second: 00 }, function(){
+let dailyInterval = () => schedule.scheduleJob({ hour: 00, minute: 49, second: 00 }, function(){
     console.log('Time for tea!')
     return fetch(`${process.env.API_ENDPOINT}`)
         .then(res => res.json())
