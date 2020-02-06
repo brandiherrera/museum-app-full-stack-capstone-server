@@ -1,22 +1,31 @@
 const fetch = require('isomorphic-fetch')
+const schedule = require('node-schedule')
 
-// const metRouter = require('./met-router')
+
+let dailyInterval = () => schedule.scheduleJob({ hour: 00, minute: 00, second: 00 }, function(){
+    console.log('Time for tea!')
+    return fetch(`${process.env.API_ENDPOINT}`)
+        .then(res => res.json())
+        .then(resJson => console.log(resJson))
+        .then(resJson => resJson)
+        .catch(err => {
+            console.log('dailyIntervalTest() Error:', err.message)
+            // return err
+        })
+})
+dailyInterval();
+
 
 const MetService = {
-    // checkExists(knex, newData) {
-    //     return knex
-    //         .select('*')
-    //         .where('object_id', newData.object_id)
-    //         .from('museum_art_data')
-    //         // .update('*')
-    // },
+    getObjectIds(knex) {
+        console.log('working')
+        return knex
+            .select('object_id')
+            .from('museum_art_data')
+            .returning('*')
+    },
     insertObjectData(knex, newData) {
-        // for (let i = 0; i < 5; i++) {
-        //     if (newData.object_id exists in db,)
-        // }
         console.log('insertObjectData(newData)', newData)
-        // else { 
-            // if (newData.object_id )
         return knex
             // .raw()
             .insert(newData)
@@ -25,6 +34,25 @@ const MetService = {
             .then(rows => {
                 return rows[0]
             })
+    },
+    insertInterval(knex, newData) {
+        console.log('insertInterval(newData)', newData)
+        return knex
+            .insert(newData)
+            .into('daily_interval')
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
+    getInterval(knex) {
+        console.log('getInterval working')
+        return knex
+            .select('*')
+            .from('daily_interval')
+            .orderBy('id')
+            .first()
+            
     },
     getObjectData(knex, objectArray) {
         for (let i = 0; i < 5; i++) {
@@ -66,13 +94,14 @@ const MetService = {
         return knex
             .from('museum_art_data')
             .select('*')
-            .where('id', id)
-            .first()
+            .where('object_id', id)
+            // .first()
     },
     getRandomId(objectArray) {
         let randomId = objectArray[Math.floor(Math.random() * objectArray.length)];
-        console.log('randomId', randomId);
-        return randomId;
+        console.log('randomId', randomId.object_id);
+        return parseInt(randomId.object_id);
+        // let objId = randomId.object_id
     },
     getMetData(knex) {
         return fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=european&medium=Paintings')
@@ -107,7 +136,6 @@ const MetService = {
             .where({ object_id })
             .delete()
     },
-
 }
 
 module.exports = MetService

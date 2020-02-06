@@ -1,6 +1,7 @@
 const express = require('express')
 const xss = require('xss')
 const MetService = require('./met-service')
+const ArtService = require('../art/art-service')
 
 const metRouter = express.Router()
 const jsonParser = express.json()
@@ -33,11 +34,6 @@ metRouter
                 return res.status(400).json({
                     error: { message: `Missing '${key}' in request body` }
                 })
-
-        // newdata.user_id = req.user.id
-
-        // MetService.checkExists(req.app.get('db'), newData) ? console.log('checkExists true') :
-        
         MetService.insertObjectData(req.app.get('db'), newData)
             .then(data => {
                 res
@@ -59,6 +55,59 @@ metRouter
             })
             .catch(next)
     })
+
+metRouter
+    .route('/interval')
+    .all((req, res, next) => {
+        MetService.getObjectIds(req.app.get('db'))
+        .then(met => {
+            console.log('MET', met, met.length)
+            res.met = met
+
+            MetService.getById(req.app.get('db'), MetService.getRandomId(res.met))
+            .then(data => {
+                console.log(data)
+                if (!data) {
+                    return res
+                        .status(404)
+                        .send({ error: { message: `Data doesn't exist.` } })
+                }
+                res.data = data
+                console.log('RESDATA====>>>>', res.data)
+                // next()
+            // })
+            MetService.insertInterval(req.app.get('db'), res.data)
+            console.log('insertInterval working')
+            // .then(data => {
+                return res
+                    .status(201)
+                    // .primary_image(path.posix.join(req.originalUrl, `${data.id}`))
+                    // .json(serializedata(data))
+                    .json(data)
+            })
+        })
+        // })
+        .catch(next)
+    })
+    .get((req, res) => {
+        // res.json(MetService.getRandomId(res.met))
+        console.log('RES.DATA AGAIN=======>>>>>>>', res.data)
+        // res.data
+        // res.json(ArtService.getById(req.app.get('db'), randomId))
+        console.log('get ran')
+        return res.json(res.data)
+    })
+    
+metRouter
+    .route('/daily')
+    .get((req, res, next) => {
+        MetService.getInterval(req.app.get('db'))
+        .then(met => {
+            res.json(met)
+        })
+        .catch(next)
+    })
+    // .get()
 
 metRouter
     .route('/:object_id')
