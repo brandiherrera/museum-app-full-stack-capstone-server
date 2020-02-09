@@ -2,7 +2,7 @@ const fetch = require('isomorphic-fetch')
 const schedule = require('node-schedule')
 
 
-let dailyInterval = () => schedule.scheduleJob({ hour: 02, minute: 41, second: 00 }, function(){
+let dailyInterval = () => schedule.scheduleJob({ hour: 13, minute: 25, second: 00 }, function(){
     console.log('Time for tea!')
     return fetch(`${process.env.API_ENDPOINT}`)
         .then(res => res.json())
@@ -50,7 +50,7 @@ const MetService = {
         return knex
             .select('*')
             .from('daily_interval')
-            .orderBy('id')
+            .orderBy('daily_interval_id', 'desc')
             .first()
             
     },
@@ -105,6 +105,7 @@ const MetService = {
     },
     getMetData(knex) {
         return fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=european&medium=Paintings')
+        // return fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?q=vangogh')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(response.statusText)
@@ -114,10 +115,11 @@ const MetService = {
             })
             .then(resJson => {
                 // console.log('resJson', resJson)
+                // const objId = resJson.objectID
                 const objectIds = resJson.objectIDs;
                 console.log('KNEX====>', knex)
                 MetService.getObjectData(knex, objectIds)
-
+                // MetService.getObjectData(knex, objId)
                 // <==================================   TODO   ==================================> 
                 // map objectIDs and filter out paintings, hasImage, etc.
                 // then insert into db with necessary data

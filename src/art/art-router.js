@@ -48,6 +48,27 @@ artRouter
     })
 
 artRouter
+    .route('/id/:id')
+    .all((req, res, next) => {
+        ArtService.getId(req.app.get('db'), req.params.id)
+        // console.log(req.params.id)
+            .then(art => {
+                console.log(art)
+                if (!art) {
+                    return res.status(404).json({
+                        error: { message: `Art information doesn't exist` }
+                    })
+                }
+                res.art = art
+                next()
+            })
+            .catch(next)
+    })
+    .get((req, res, next) => {
+        res.json(res.art)
+    })
+
+artRouter
     .route('/gallery/:user_id')
     .all(requireAuth)
     .all((req, res, next) => {

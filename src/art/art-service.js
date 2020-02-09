@@ -11,6 +11,13 @@ const ArtService = {
             .where('object_id', object_id)
             .first()
     },
+    getId(knex, id) {
+        return knex
+            .from('museum_art_data')
+            .select('*')
+            .where('id', id)
+            .first()
+    },
     deleteById(knex, object_id) {
         return knex('museum_art_data')
             .where( 'object_id', object_id )
