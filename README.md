@@ -73,6 +73,7 @@ As a returning user I want to access a log out so I can log out at my convenienc
 <!-- ----------------TODO: RANDOM GENERATOR HERE? ---------------- -->
 
 <img src="./screenshots/dashboard.png" alt="Dashboard">
+<img src="./screenshots/dashboard-2.png" alt="Dashboard">
 
 ### **Gallery**
 
@@ -86,17 +87,17 @@ As a returning user I want to access a log out so I can log out at my convenienc
 #### GET `api/art/:object_id`
 
 <img src="./screenshots/art-page.png" alt="Art page">
+<img src="./screenshots/art-page-2.png" alt="Art page">
 
 ### **Comments**
 
 #### POST `api/art/comments` <br> GET `api/art/comments/:object_id`
 
-<img src="./screenshots/comments.png" alt="Comments">
 
 ## API Documentation
 
 ### Users Endpoints
-*Private `/users/:user_id` endpoints require an `authorization` header with value of `bearer YOUR_AUTH_TOKEN_HERE` which is assigned upon signing up for an account.*
+*Private endpoints containing `/:user_id` require an `authorization` header with value of `bearer YOUR_AUTH_TOKEN_HERE` which is assigned upon signing up for an account.*
 
 ### POST `api/users`
 
@@ -106,156 +107,118 @@ Adds a new user to the user database which enables them to use their account to 
 
 Allows a user in the database to "login" with their correct credentials. Returns the authToken and userId which allows them access to their private information on the secure `/users/:user_id` endpoint.
 
-### GET `api/art`
+Once the user is logged in, the server is updated with a random art image through various back end algorithms and fetches, which it subsequently displays on the user dashboard.
 
-Returns the art that is displayed on the dashboard. 
-<!-- ----------------TODO: Include the random art generator details here ---------------- -->
+### GET `api/met/daily`
 
-<!-- **Example response**
+Returns the art that is to be displayed on the user's dashboard, through a sequence of events on the server after login which ensures a random piece of art is generated.
+
+**Example response**
 ```JSON
 {
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
+    "daily_interval_id": 197,
+    "id": 37,
+    "date_created": "2020-02-09T13:30:12.355Z",
+    "object_id": 436525,
+    "primary_image": "https://images.metmuseum.org/CRDImages/ep/original/DT7098.jpg",
+    "art_title": "Bouquet of Flowers in a Vase",
+    "art_artist": "Vincent van Gogh",
+    "art_date": "1890"
 }
-``` -->
+```
 
 ### GET `api/art/gallery/:user_id`
 
 Allows a logged-in user to access all of the artwork they have saved to their gallery by returning an array of just the image data. The user can click on each individual image to then proceed to the art page where the user can then view each artwork in greater detail and comment.
 
-<!-- **Example response**
+**Example response**
 ```JSON
-{
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
-}
-``` -->
-
-<!---------------TODO: ### DELETE `api/art/gallery/:user_id/:object_id` ------------------>
-
-<!-- Allows a logged-in user to delete a saved art id using the `object_id` of the corresponding record.
-
-A successful `DELETE` responds with `204 No Content`. -->
+[
+    {
+        "id": 43,
+        "date_created": "2020-02-09T13:30:12.355Z",
+        "user_id": 1,
+        "user_name": "iLOVEart",
+        "art_id": 436532,
+        "object_id": 436532,
+        "primary_image": "https://images.metmuseum.org/CRDImages/ep/original/DT1502_cropped2.jpg",
+        "art_title": "Self-Portrait with a Straw Hat (obverse: The Potato Peeler)",
+        "art_artist": "Vincent van Gogh",
+        "art_date": "1887"
+    },
+    {
+        "id": 41,
+        "date_created": "2020-02-09T13:30:12.355Z",
+        "user_id": 1,
+        "user_name": "iLOVEart",
+        "art_id": 436530,
+        "object_id": 436530,
+        "primary_image": "https://images.metmuseum.org/CRDImages/ep/original/DT1494.jpg",
+        "art_title": "Oleanders",
+        "art_artist": "Vincent van Gogh",
+        "art_date": "1888"
+    }
+]
+```
 
 ### POST `api/gallery/:user_id`
 
 Allows a logged-in user to save an artwork with all corresponding data and comments.
 
-<!-- **Example request**
+**Example request**
 ```JSON
 {
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
+	"art_id": 436530
 }
-``` -->
+```
 
-<!-- **Example response**
-```JSON
-{
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
-}
-``` -->
+A successful request responds with `201 Created`.
+
+
 
 ### POST `api/comments/`
 
 Allows a logged-in user to post a comment on a piece of art.
 
-<!-- **Example request**
+**Example request**
 ```JSON
-{
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
-}
-``` -->
-
-<!-- **Example response**
-```JSON
-{
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
-}
-``` -->
+    {
+        "user_name": "iLOVEart",
+        "art_id": 436530,
+        "comment": "Awesome!!"
+    }
+```
+A successful request responds with `201 Created`.
 
 ### GET `api/comments/object_id`
 
 Allows a logged-in user to view all comments other users have made on a piece of art as well as their own comments. This displays below each piece of art and is referenced by the artwork's `object_id`.
 
-<!-- **Example request**
+**Example response**
 ```JSON
-{
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
-}
-``` -->
-
-<!-- **Example response**
-```JSON
-{
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ,
-    "": "",
-    "": "",
-    "": "",
-    "": ""
-}
-``` -->
+[
+    {
+        "id": 58,
+        "date_created": "2020-02-17T01:43:53.194Z",
+        "user_id": 1,
+        "user_name": "iLOVEart",
+        "art_id": 436530,
+        "comment": "Awesome!!"
+    },
+    {
+        "id": 59,
+        "date_created": "2020-02-17T01:45:53.195Z",
+        "user_id": 2,
+        "user_name": "artlover3000",
+        "art_id": 436530,
+        "comment": "I think this is awesome, too! @iLOVEart"
+    }
+]
+```
 
 ## Third-Party API Documentation
 
-<!-- ADD INFO HERE -->
+Database information is sourced from [The Metropolitan Museum of Art Collection API](https://metmuseum.github.io/). Sourced information is fetched from this third-party API and kept in a PostgreSQL database that is updated automatically when `GET api/met` is called.
 
 ## Technology Used
 
