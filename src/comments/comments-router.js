@@ -34,15 +34,12 @@ commentsRouter
 
         newComment.user_id = req.user.id
         newComment.user_name = req.user.user_name
-        console.log('User id L38====>', newComment.user_id)
-        console.log('User id L39====>', newComment.user_name)
 
         CommentsService.insertComment(
             req.app.get('db'),
             newComment
         )
             .then(comment => {
-                console.log('COMMENT L44 ====>', comment)
                 res
                     .status(201)
                     .location(path.posix.join(req.originalUrl, `${comment.id}`))

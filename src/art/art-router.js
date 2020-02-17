@@ -51,9 +51,7 @@ artRouter
     .route('/id/:id')
     .all((req, res, next) => {
         ArtService.getId(req.app.get('db'), req.params.id)
-        // console.log(req.params.id)
             .then(art => {
-                console.log(art)
                 if (!art) {
                     return res.status(404).json({
                         error: { message: `Art information doesn't exist` }
@@ -82,7 +80,6 @@ artRouter
                 res.gallery = gallery
                 next()
             })
-            // .then()
             .catch(next)
     })
     .get((req, res) => {
@@ -112,16 +109,16 @@ artRouter
             })
             .catch(next)
     })
-    // .delete((req, res, next) => {
-    //     ArtService.deleteUserGallery(
-    //         req.app.get('db'),
-    //         req.params.art_id
-    //     )
-    //         .then(() => {
-    //             res.status(204).end()
-    //         })
-    //         .catch(next)
-    // })
+    .delete((req, res, next) => {
+        ArtService.deleteUserGallery(
+            req.app.get('db'),
+            req.params.art_id
+        )
+            .then(() => {
+                res.status(204).end()
+            })
+            .catch(next)
+    })
 
 
 artRouter

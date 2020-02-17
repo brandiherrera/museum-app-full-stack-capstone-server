@@ -1,36 +1,10 @@
 const express = require('express')
-const xss = require('xss')
 const path = require('path')
 const usersRouter = express.Router()
 const jsonBodyParser = express.json()
 const UsersService = require('./users-service')
-const ArtService = require('../art/art-service')
-const { requireAuth } = require('../middleware/jwt-auth')
 
-const jsonParser = express.json()
 
-// const serializeUser = user => ({
-//     user_id: user.id,
-//     first_name: xss(user.first_name),
-//     last_name: xss(user.last_name),
-//     user_name: xss(user.user_name),
-//     email: xss(user.email),
-//     password: xss(user.password),
-//     date_created: new Date(user.date_created),
-// })
-
-// const serializeUser = (user) => {
-//     return {
-//         // user_id: user.id,
-//         id: user.id,
-//         first_name: xss(user.first_name),
-//         last_name: xss(user.last_name),
-//         user_name: xss(user.user_name),
-//         email: xss(user.email),
-//         // password: xss(user.password),
-//         date_created: new Date(user.date_created),
-//     }
-// }
 // All users
 usersRouter
     .route('/')

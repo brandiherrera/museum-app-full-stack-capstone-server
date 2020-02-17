@@ -1,7 +1,5 @@
 const express = require('express')
-const xss = require('xss')
 const MetService = require('./met-service')
-const ArtService = require('../art/art-service')
 
 const metRouter = express.Router()
 const jsonParser = express.json()
@@ -19,7 +17,6 @@ metRouter
     .route('/')
     .get((req, res, next) => {
         MetService.getMetData(req.app.get('db'))
-        // MetService.getMetData()
             .then(met => {
                 res.json(met)
             })
@@ -38,7 +35,6 @@ metRouter
             .then(data => {
                 res
                     .status(201)
-                    // .primary_image(path.posix.join(req.originalUrl, `${data.id}`))
                     .json(serializedata(data))
             })
             .catch(next)
@@ -47,7 +43,6 @@ metRouter
         const { object_id } = req.params;
         MetService.deleteMetItem(
             req.app.get('db'),
-            // req.params.id
             object_id
         )
             .then(() => {
@@ -61,40 +56,25 @@ metRouter
     .all((req, res, next) => {
         MetService.getObjectIds(req.app.get('db'))
         .then(met => {
-            console.log('MET', met, met.length)
             res.met = met
 
             MetService.getById(req.app.get('db'), MetService.getRandomId(res.met))
             .then(data => {
-                console.log(data)
                 if (!data) {
                     return res
                         .status(404)
                         .send({ error: { message: `Data doesn't exist.` } })
                 }
                 res.data = data
-                console.log('RESDATA====>>>>', res.data)
-                // next()
-            // })
             MetService.insertInterval(req.app.get('db'), res.data)
-            console.log('insertInterval working')
-            // .then(data => {
                 return res
                     .status(201)
-                    // .primary_image(path.posix.join(req.originalUrl, `${data.id}`))
-                    // .json(serializedata(data))
                     .json(data)
             })
         })
-        // })
         .catch(next)
     })
     .get((req, res) => {
-        // res.json(MetService.getRandomId(res.met))
-        console.log('RES.DATA AGAIN=======>>>>>>>', res.data)
-        // res.data
-        // res.json(ArtService.getById(req.app.get('db'), randomId))
-        console.log('get ran')
         return res.json(res.data)
     })
     
@@ -107,13 +87,11 @@ metRouter
         })
         .catch(next)
     })
-    // .get()
 
 metRouter
     .route('/:object_id')
     .all((req, res, next) => {
         const { object_id } = req.params;
-        console.log(req.params)
         MetService.getById(req.app.get('db'), object_id)
             .then(data => {
                 if (!data) {

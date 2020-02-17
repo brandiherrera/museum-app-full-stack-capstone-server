@@ -6,7 +6,6 @@ const CommentsService = {
     },
     getUsername(knex, id) {
         return knex
-            // .select('*')
             .select('user_name')
             .from('museum_users')
             .where('id', id)
